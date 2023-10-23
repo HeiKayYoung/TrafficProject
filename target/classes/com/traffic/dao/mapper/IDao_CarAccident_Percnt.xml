@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_CarAccident_Chart">
+	
+	<select id="searchYearType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+		SELECT  YEAR
+		FROM    THISACCIDENT_PERCNT
+		GROUP BY YEAR
+		ORDER BY YEAR DESC
+	</select>
+	
+	<select id="searchAgeType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+		SELECT  	AGE
+		FROM    THISACCIDENT_PERCNT
+		GROUP BY AGE
+		ORDER BY AGE
+	</select>
+	
+	<select id="searchAccidentYearType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+		
+		<!-- SELECT  	YEAR,
+        			SUM(INJURED_CNT) AS SUM_INJURED_CNT,
+        			SUM(CASUALTIES_CNT)  AS SUM_CASUALTIES_CNT,
+        			SUM(DEAD_CNT)  AS SUM_DEAD_CNT
+		FROM    THISACCIDENT_PERCNT
+		WHERE 	YEAR = #{param1}
+		GROUP BY YEAR -->
+		
+		SELECT 	AGE
+					,TO_CHAR(INJURED_CNT, 'FM999,999,999,999') AS INJURED_CNT
+					,TO_CHAR(CASUALTIES_CNT, 'FM999,999,999,999') CASUALTIES_CNT
+					,TO_CHAR(DEAD_CNT, 'FM999,999,999,999') DEAD_CNT
+		FROM 	THISACCIDENT_PERCNT
+		WHERE 	YEAR = #{param1}
+	</select>
+	
+	<select id="searchAccidentAgeType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+	
+		<!-- SELECT  	AGE,
+			        SUM(INJURED_CNT) AS SUM_INJURED_CNT,
+			        SUM(CASUALTIES_CNT) AS SUM_CASUALTIES_CNT,
+			        SUM(DEAD_CNT) AS SUM_DEAD_CNT
+		FROM 	THISACCIDENT_PERCNT
+		WHERE 	AGE = #{param1}
+		GROUP BY AGE -->
+	
+		SELECT 	YEAR
+					,TO_CHAR(INJURED_CNT, 'FM999,999,999,999') AS INJURED_CNT
+					,TO_CHAR(CASUALTIES_CNT, 'FM999,999,999,999') AS CASUALTIES_CNT
+					,TO_CHAR(DEAD_CNT, 'FM999,999,999,999') AS  DEAD_CNT
+		FROM 	THISACCIDENT_PERCNT
+		WHERE 	AGE = #{param1}
+		ORDER BY YEAR DESC
+	
+	</select>
+	
+</mapper>

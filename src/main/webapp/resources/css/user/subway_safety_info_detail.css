@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+/* * {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	font-family: "고딕";
+}
+ */
+@font-face {
+	font-family: 'GmarketSansMedium';
+	src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.content{
+	height:100%;
+}
+
+#ttb{
+	width:900px;
+}
+
+.tg {
+	border: none;
+	border-collapse: collapse;
+}
+
+.tg td {
+	font-size: 14px;
+	overflow: hidden;
+	padding: 15px 20px;
+}
+
+.tg .tg-cyim {
+	font-size: 22px;
+	text-align: left;
+}
+
+.tg .tg-b3sw {
+	background-color: #D5C2EE;
+	font-weight: bold;
+	font-size: 16px;
+	text-align: left;
+	border-bottom: 1px solid white;
+}
+
+.tg .tg-0lax {
+	text-align: left;
+	font-size: 16px;
+}
+#kmtitle {
+	width: 900px;
+	text-align: left;
+	font-size: 16px;
+}
+#kmwriter {
+	width: 900px;
+	text-align: left;
+	font-size: 16px;
+}
+
+#textarea {
+	resize: none;
+	height: 500px;
+	width: 100%;
+	border: none;
+	border-top: 3px solid gray;
+	border-bottom: 3px solid gray;
+	padding-top: 50px;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: left;
+	font-size: 17px;
+	margin-left: 0px;
+
+
+}
+
+#textarea:focus{
+	outline: none;
+}
+#tto{
+	padding: 50px;
+}
+
+.btt input[type=button]{
+	height: 40px;
+	width: 80px;
+	background-color: purple;
+	color: white;
+	font-size: 18px;
+	font-weight: bolder;
+	border-radius: 6px;
+	border: none;
+	
+}
+#pl{
+	margin-right: 150px;
+}
+.btt{
+	text-align: right;
+	padding-bottom: 80px;
+}
+
+.bttl{
+	color:white;
+	background-color: purple;
+	width: 85px;
+	height: 40px;
+	font-weight: bolder;
+	border-radius: 5px;
+	font-size: 18px;
+}

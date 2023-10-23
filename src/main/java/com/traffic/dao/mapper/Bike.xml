@@ -1,0 +1,93 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_Bike">
+
+	<select id="new_member2021"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT SUBSTR(JOIN_DATE, 5, 6) AS JOIN_MONTH, SUM(TOT_JOIN) AS TOT_JOIN
+		FROM BIKE_NEW_MEMBER
+		WHERE SUBSTR(JOIN_DATE, 1, 4) = 2021
+		GROUP BY JOIN_DATE
+		ORDER BY JOIN_DATE
+	</select>
+
+	<select id="new_member2022"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT SUBSTR(JOIN_DATE, 5, 6) AS JOIN_MONTH, SUM(TOT_JOIN) AS TOT_JOIN
+		FROM BIKE_NEW_MEMBER
+		WHERE SUBSTR(JOIN_DATE, 1, 4) = 2022
+		GROUP BY JOIN_DATE
+		ORDER BY JOIN_DATE
+	</select>
+
+	<select id="new_member2023"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT SUBSTR(JOIN_DATE, 5, 6) AS JOIN_MONTH, SUM(TOT_JOIN) AS TOT_JOIN
+		FROM BIKE_NEW_MEMBER
+		WHERE SUBSTR(JOIN_DATE, 1, 4) = 2023
+		GROUP BY JOIN_DATE
+		ORDER BY JOIN_DATE
+	</select>
+	<select id="ride_bike"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT * FROM HOWTORIDE
+	</select>
+	<select id="install_bike"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(INST_DATE, 'MM') AS "MONTH",COUNT(RENT_NO) AS "COUNT"
+		FROM BIKE_INST_DATE
+		WHERE TO_CHAR(INST_DATE, 'YYYY')='2023'
+		GROUP BY TO_CHAR(INST_DATE, 'MM')
+		ORDER BY MONTH
+	</select>
+	<select id="install_bike2"
+		resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(INST_DATE, 'MM') AS "MONTH",COUNT(RENT_NO) AS "COUNT"
+		FROM BIKE_INST_DATE
+		WHERE TO_CHAR(INST_DATE, 'YYYY')=#{param1}
+		GROUP BY TO_CHAR(INST_DATE, 'MM')
+		ORDER BY MONTH
+	</select>
+
+	
+
+	<select id="use_year_bike" resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(DAY_RENT, 'YYYY') AS "YEAR", TO_CHAR(DAY_RENT, 'MM') AS "MONTH",
+		SUM(RENT_NUM) AS "NUM"
+		FROM BIKE_DAY_RENT
+		WHERE TO_CHAR(DAY_RENT, 'YYYY')='2023'
+		GROUP BY TO_CHAR(DAY_RENT, 'YYYY'), TO_CHAR(DAY_RENT, 'MM') 
+		ORDER BY YEAR
+	</select>
+	<select id="use_year_bike2" resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(DAY_RENT, 'YYYY') AS "YEAR", TO_CHAR(DAY_RENT, 'MM') AS "MONTH",
+		SUM(RENT_NUM) AS "NUM"
+		FROM BIKE_DAY_RENT
+		WHERE TO_CHAR(DAY_RENT, 'YYYY')=#{param1}
+		GROUP BY TO_CHAR(DAY_RENT, 'YYYY'), TO_CHAR(DAY_RENT, 'MM') 
+		ORDER BY YEAR
+	</select>
+	
+	
+	<select id="use_month_bike" resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(DAY_RENT, 'YYYY') AS "YEAR", TO_CHAR(DAY_RENT, 'MM') AS "MONTH",
+		TO_CHAR(DAY_RENT, 'DD') AS "DAY", RENT_NUM AS "NUM"
+		FROM BIKE_DAY_RENT
+		WHERE TO_CHAR(DAY_RENT, 'YYYY')='2023' AND TO_CHAR(DAY_RENT, 'MM')='06'
+		GROUP BY TO_CHAR(DAY_RENT, 'YYYY'), TO_CHAR(DAY_RENT, 'MM'),TO_CHAR(DAY_RENT, 'DD'), RENT_NUM  
+		ORDER BY DAY
+	</select>
+	<select id="use_month_bike2" resultType="com.traffic.dto.user.DTO_Bike">
+		SELECT TO_CHAR(DAY_RENT, 'YYYY') AS "YEAR", TO_CHAR(DAY_RENT, 'MM') AS "MONTH",
+		TO_CHAR(DAY_RENT, 'DD') AS "DAY", RENT_NUM AS "NUM"
+		FROM BIKE_DAY_RENT
+		WHERE TO_CHAR(DAY_RENT, 'YYYY')=#{param1} AND TO_CHAR(DAY_RENT, 'MM')=#{param2}
+		GROUP BY TO_CHAR(DAY_RENT, 'YYYY'), TO_CHAR(DAY_RENT, 'MM'),TO_CHAR(DAY_RENT, 'DD'), RENT_NUM  
+		ORDER BY DAY
+	</select>
+
+
+</mapper>

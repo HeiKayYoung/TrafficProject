@@ -1,0 +1,211 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_Seoul_Parking">
+
+	<sql id="search">
+		<if test="param3 == ''"></if>
+		<if test="param3 == 1">
+			AND P_ADDRESS LIKE '%' || #{param4} || '%'
+		</if>
+		<if test="param3 == 2">
+			AND P_KIND_NAME LIKE '%' || #{param4} || '%'
+		</if>
+	</sql>
+	
+	<sql id="search_after">
+		<if test="param1 == ''"></if>
+		<if test="param1 == 1">
+			AND P_ADDRESS LIKE '%' || #{param2} || '%'
+		</if>
+		<if test="param1 == 2">
+			AND P_KIND_NAME LIKE '%' || #{param2} || '%'
+		</if>
+	</sql>
+	
+	<select id="seoul_parking" resultType="com.traffic.dto.user.DTO_Seoul_Parking">
+		
+		SELECT *
+		FROM (
+		    SELECT ROWNUM NUM, N.*
+		    FROM (
+		        SELECT 
+		            A.P_CODE,
+		            A.P_NAME, 
+		            A.P_ADDRESS,
+		            A.P_KIND_NAME, 
+		            A.P_DEFAULT_TIME_MIN,
+		            A.P_DEFAULT_PRICE,
+		            A.P_ADD_PRICE_MIN,
+		            A.P_ADD_PRICE,
+		            B.P_TOTAL_SPACE,
+		            A.P_WEEK_OPEN_TIME, 
+		            A.P_WEEK_END_TIME, 
+		            A.P_WEEKEND_OPEN_TIME, 
+		            A.P_WEEKEND_END_TIME,
+		            A.P_TEL	
+		        FROM SEOULPARKING A 
+		        INNER JOIN SEOULPARKING10 B ON A.P_CODE = B.P_CODE
+		        WHERE A.P_TOTAL_SPACE >= 10 
+		          <include refid="search"/>
+		        GROUP BY A.P_CODE, A.P_NAME, A.P_ADDRESS, A.P_KIND_NAME, B.P_TOTAL_SPACE, A.P_TEL, 
+		                 A.P_WEEK_OPEN_TIME, A.P_WEEK_END_TIME, A.P_WEEKEND_OPEN_TIME, A.P_WEEKEND_END_TIME,
+		                 A.P_DEFAULT_TIME_MIN, A.P_DEFAULT_PRICE, A.P_ADD_PRICE_MIN, A.P_ADD_PRICE
+		        ORDER BY A.P_CODE
+		    ) N
+		) 
+		WHERE NUM BETWEEN #{param1} AND #{param2}
+		
+	</select>
+	
+	<select id="prev_next" resultType="com.traffic.dto.user.DTO_Seoul_Parking">
+		
+		SELECT * FROM (SELECT P_CODE, P_NAME,P_TOTAL_SPACE,
+		LAG(P_CODE, 1,0) OVER(ORDER BY P_CODE ) PREVNUM,
+		LAG(P_NAME, 1, '이전글이 없습니다') OVER(ORDER BY P_CODE ) PREVTITLE,
+
+		LEAD(P_CODE,1,0) OVER (ORDER BY P_CODE ) NEXTNUM,
+		LEAD(P_NAME,1,'다음글이 없습니다') OVER (ORDER BY P_CODE ) NEXTTITLE
+		FROM SEOULPARKING )
+		WHERE P_CODE=#{param1} AND P_TOTAL_SPACE>10
+		ORDER BY P_CODE
+		
+	</select>
+	
+	<select id="seoul_parking_paging" resultType="Integer">
+	
+		SELECT COUNT(*)
+		FROM SEOULPARKING
+		WHERE P_TOTAL_SPACE >= 10
+		<include refid="search_after"/>
+		
+	</select>
+	
+	<select id="seoul_parking_chart" resultType="java.util.Map">
+	
+		SELECT SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1) AS 구, COUNT(*) AS PARKING_COUNT
+		FROM SEOULPARKING
+		WHERE P_TOTAL_SPACE > 10
+		GROUP BY SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1)
+		ORDER BY PARKING_COUNT DESC
+		
+	</select>
+	
+	<select id="seoul_free_parking_chart" resultType="java.util.Map">
+	
+		SELECT SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1) AS 구, COUNT(*) AS FREE_PARKING_COUNT
+		FROM SEOULPARKING
+		WHERE P_TOTAL_SPACE > 10
+		AND P_PAID_AND_FREE_NAME = '무료'
+		GROUP BY SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1)
+		ORDER BY FREE_PARKING_COUNT DESC
+		
+	</select>
+	
+	<select id="seoul_not_free_parking_chart" resultType="java.util.Map">
+	
+		SELECT SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1) AS 구, COUNT(*) AS NOT_FREE_PARKING_COUNT
+		FROM SEOULPARKING
+		WHERE P_TOTAL_SPACE > 10
+		AND P_PAID_AND_FREE_NAME = '유료'
+		GROUP BY SUBSTR(P_ADDRESS, 1, INSTR(P_ADDRESS, ' ') - 1)
+		ORDER BY NOT_FREE_PARKING_COUNT DESC
+		
+	</select>
+	
+	<select id="seoul_parking_view" resultType="com.traffic.dto.user.DTO_Seoul_Parking">
+	
+		SELECT P_CODE,P_NAME,P_ADDRESS,P_KIND,P_KIND_NAME,P_MANAGEMENT,P_MANAGEMENT_NAME,P_TEL,
+			   P_DATA_AGREE,P_DATA,P_TOTAL_SPACE,P_PAID_AND_FREE,P_PAID_AND_FREE_NAME,
+			   P_FREE_NIGHT_CHECK,P_FREE_NIGHT,P_WEEK_OPEN_TIME,P_WEEK_END_TIME,
+			   P_WEEKEND_OPEN_TIME,P_WEEKEND_END_TIME,P_HOLIDAY_OPEN_TIME,P_HOLIDAY_END_TIME,
+			   P_LAST_DATA_TIME,P_SATURDAY_PAID_AND_FREE,A,
+			   P_HOLIDAY_PAID_AND_FREE,A2,P_MONTH_PRICE,A3,
+			   P_DEFAULT_PRICE,P_DEFAULT_TIME_MIN,P_ADD_PRICE,P_ADD_PRICE_MIN,P_BUS_DEFAULT_PRICE,P_BUS_DEFAULT_TIME_MIN,
+			   P_BUS_ADD_TIME_MIN,P_BUS_ADD_PRICE,P_DAY_MAX_PRICE,P_LATITUDE,P_HARDNESS
+		FROM SEOULPARKING
+		WHERE P_TOTAL_SPACE >= 10
+		AND P_CODE = #{param1}
+		
+	</select>
+	
+	<sql id="ec_search">
+		<if test="param3 == ''"></if>
+		<if test="param3 == 1">
+			WHERE EC_CHARGE LIKE '%' || #{param4} || '%'
+		</if>
+		<if test="param3 == 2">
+			WHERE EC_CHARGE_PARKING LIKE '%' || #{param4} || '%'
+		</if>
+	</sql>
+	
+	<sql id="ec_search_after">
+		<if test="param1 == ''"></if>
+		<if test="param1 == 1">
+			WHERE EC_CHARGE LIKE '%' || #{param2} || '%'
+		</if>
+		<if test="param1 == 2">
+			WHERE EC_CHARGE_PARKING LIKE '%' || #{param2} || '%'
+		</if>
+	</sql>
+	
+	<select id="ec_charge_paging" resultType="Integer">
+	
+		SELECT COUNT(*)
+		FROM EC_CHARGE
+		<include refid="ec_search_after"/>
+		
+	</select>
+	
+	<select id="ec_charge" resultType="com.traffic.dto.user.DTO_Seoul_Ec_Charger">
+		 	 
+ 	    SELECT EC_CITY,EC_CHARGE,EC_CHARGE_ID,EC_CHARGE_TYPE,EC_CHARGE_FACILITY,
+			   EC_CHARGE_PARKING,EC_LOCATION,EC_STATE,EC_ADDRESS,EC_TIME,
+			   EC_USER,EC_KW,EC_FACILITY2,EC_NOTE
+	    FROM (
+		    SELECT A.EC_CITY,A.EC_CHARGE,A.EC_CHARGE_ID,A.EC_CHARGE_TYPE,A.EC_CHARGE_FACILITY,
+			       A.EC_CHARGE_PARKING,A.EC_LOCATION,A.EC_STATE,A.EC_ADDRESS,A.EC_TIME,
+			   	   A.EC_USER,A.EC_KW,A.EC_FACILITY2,A.EC_NOTE,
+			   	   ROW_NUMBER() OVER(ORDER BY EC_CHARGE) AS RNUM
+		    FROM EC_CHARGE A
+		    <include refid="ec_search"/>
+		) WHERE RNUM BETWEEN #{param1} AND #{param2} 
+		 	 	
+	</select>
+	
+	<select id="ec_view" resultType="com.traffic.dto.user.DTO_Seoul_Ec_Charger">
+		
+		SELECT EC_CITY,EC_CHARGE,EC_CHARGE_ID,EC_CHARGE_TYPE,EC_CHARGE_FACILITY,
+			   EC_CHARGE_PARKING,EC_LOCATION,EC_STATE,EC_ADDRESS,EC_TIME,
+			   EC_USER,EC_KW,EC_FACILITY2,EC_NOTE
+		FROM EC_CHARGE
+		WHERE EC_CHARGE = #{param1}
+		
+	</select>
+	
+	<select id="ec_prev_next" resultType="com.traffic.dto.user.DTO_Seoul_Ec_Charger">
+		
+		SELECT * FROM (SELECT EC_CHARGE,
+		LAG(EC_CHARGE, 1,0) OVER(ORDER BY EC_CHARGE ) PREVNUM,
+		LAG(EC_CHARGE, 1, '이전글이 없습니다') OVER(ORDER BY EC_CHARGE ) PREVTITLE,
+
+		LEAD(EC_CHARGE,1,0) OVER (ORDER BY EC_CHARGE ) NEXTNUM,
+		LEAD(EC_CHARGE,1,'다음글이 없습니다') OVER (ORDER BY EC_CHARGE ) NEXTTITLE
+		FROM EC_CHARGE )
+		WHERE EC_CHARGE= #{param1}
+		ORDER BY EC_CHARGE
+		
+	</select>
+	
+	<select id="seoul_EC_chart" resultType="java.util.Map">
+	
+		SELECT EC_STATE, SUM(EC_CHARGE_ID) AS TOTAL_EC_CHARGE_ID
+		FROM EC_CHARGE
+		GROUP BY EC_STATE
+		HAVING COUNT(EC_STATE) > 1
+		
+	</select>
+	
+</mapper>

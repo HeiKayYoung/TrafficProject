@@ -1,0 +1,14 @@
+create table notice(
+n_no number primary key,
+n_title varchar2(300),
+n_content varchar2(3000),
+n_file varchar2(10),
+n_date date,
+n_hit number);
+
+create table review(
+n_no number primary key,
+n_title varchar2(100),
+n_content varchar2(3500),
+n_date date,
+n_hit number);

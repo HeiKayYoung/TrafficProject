@@ -1,0 +1,20 @@
+
+/*
+* 구트아카데미 최종 프로젝트 (2차)
+*
+* 프로젝트 이름 : 교통데이터 팀 프로젝트
+* 개요          : 교통사고 관련 조회 사이트 제작
+*/
+
+** 사용방법 **
+
+1. Spring Tool Suite 열기 -> Import -> Existing Projects into Workspace -> Select Root Directory -> 폴더 선택 -> 완료
+
+2. 실행하기 전에 
+
+	- 교통프로젝트 Database 테이블 + 데이터(최종본, 남기문).txt
+
+	를 Oracle Sql Developer의 DB에 Insert 시킨다.
+
+3. 실행시켜보고, 안되면 Server 부분을 만진다.
+

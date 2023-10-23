@@ -1,0 +1,125 @@
+.title-left{
+	text-align: left;
+}
+
+.date-guest-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.search-box {
+    padding: 30px;
+    align-items: center;
+    margin-bottom: 20px;  
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    justify-content: space-around;
+    margin: 10px auto;
+    width: 800px; 
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.search_button {
+    border-radius: 10px;
+    padding: 10px 50px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.search-box #search_field {
+	display: flex;
+    margin: 5px auto;
+}
+
+.search-box input[type="text"]{
+    /* width: 200px; */
+    border-style: none;
+    text-align: left;
+    font-size: 18px;
+}
+
+.search-box input[type="text"],
+.search-box input[type="date"],
+.search-box select {
+    margin: 5px;
+    padding: 10px;
+    /* display: flex; */
+}
+
+.person {
+    margin: 5px;
+}
+
+.search-box input[type="date"],
+.search-box .person {
+    /* flex-wrap: wrap; */
+}
+
+/* 드롭다운 버튼 스타일 */
+.dropdown-btn {
+    /* background-color: #fff; */
+    color: black;
+    background-color: #fff;
+    border: 1px solid grey;
+    cursor: pointer;
+    padding: 10px 50px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* 드롭다운 콘텐츠 스타일 - 기본적으로 숨김 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* 드롭다운 콘텐츠 내의 링크 스타일 */
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;   
+}
+
+/* 드롭다운 콘텐츠에 마우스를 올렸을 때 스타일 */
+.dropdown-content a:hover {
+    background-color: #f9f9f9;  
+}
+
+/* 드롭다운 콘텐츠 표시 - 버튼에 마우스를 올렸을 때 */
+.dropdown:hover .dropdown-content {
+    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dropdown-content button {
+    padding: 10px;
+    align-items: center;
+    align-items: flex-end;
+}
+
+.person {
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 왼쪽과 오른쪽 끝으로 정렬 */
+}
+
+.person .count {
+    margin: 0 5px;
+}

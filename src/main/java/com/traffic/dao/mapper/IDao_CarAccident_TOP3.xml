@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_CarAccident_TOP3">
+	
+	<select id="searchFirstType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+	
+		SELECT CODE
+		          ,CODENAME
+		FROM  TMSTDATA WHERE GRPCODE = 2
+	
+	</select>
+	
+	<select id="searchSecondType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+
+		SELECT 	SUBCODE
+					,SUBCODENAME
+		FROM 	TMSTDATA
+		WHERE 	GRPCODE = 3
+		AND 		CODE = #{param1}
+	
+	</select>
+	
+	<select id="searchYearType" resultType="com.traffic.dto.user.DTO_Traffic_CarAccident">
+		
+		SELECT 	CODE
+					,CODENAME
+		FROM 	TMSTDATA
+		WHERE 	GRPCODE = 1
+	
+	</select>
+	
+</mapper>

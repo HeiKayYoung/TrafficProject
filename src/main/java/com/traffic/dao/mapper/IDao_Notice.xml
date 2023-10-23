@@ -1,0 +1,96 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_Notice">
+	<select id="notice" resultType="com.traffic.dto.user.DTO_Notice">
+	SELECT 	A.N_NO,
+			A.N_TITLE,
+  			A.N_FILE,
+  			A.N_DATE,
+  			A.N_HIT
+  		FROM 	
+  		(
+  			SELECT 	ROW_NUMBER() OVER(ORDER BY N_NO ASC) AS ROW_NUM,
+					N_NO, 
+					N_TITLE, 
+					N_FILE, 
+					N_DATE,
+					N_HIT
+			FROM 	NOTICE
+			WHERE 	N_TITLE LIKE '%' || #{param1} || '%'
+  		) A
+		WHERE A.ROW_NUM BETWEEN #{param2} AND #{param3}
+	</select>
+	<select id="pageCalculate" resultType="Integer">
+	
+		SELECT 	COUNT(*)
+		FROM 	NOTICE
+		WHERE 	N_TITLE LIKE '%' || #{param1} || '%'
+		
+	</select>
+	<select id="n_contentview" resultType="com.traffic.dto.user.DTO_Notice">
+		SELECT 
+		        N_NO,
+		        N_TITLE,
+		        N_CONTENT,
+		        N_DATE,
+		        N_HIT
+		FROM NOTICE
+		WHERE N_NO = #{param1}
+	</select>
+	<update id="uphit">
+		UPDATE NOTICE SET N_HIT = N_HIT+1 WHERE N_NO = #{param1}
+	</update>
+	<select id="review_list" resultType="com.traffic.dto.user.DTO_Notice">
+		SELECT 	A.N_NO,
+				A.N_TITLE,
+  				A.N_DATE,
+  				A.N_HIT
+  		FROM 	
+  		(
+  			SELECT 	ROW_NUMBER() OVER(ORDER BY N_NO ASC) AS ROW_NUM,
+					N_NO, 
+					N_TITLE,  
+					N_DATE,
+					N_HIT
+			FROM 	REVIEW
+			WHERE 	N_TITLE LIKE '%' || #{param1} || '%'
+  		) A
+		WHERE A.ROW_NUM BETWEEN #{param2} AND #{param3}
+	</select>
+	<select id="pageCalculate_review" resultType="Integer">
+	
+		SELECT 	COUNT(*)
+		FROM 	REVIEW
+		WHERE 	N_TITLE LIKE '%' || #{param1} || '%'
+		
+	</select>
+	<update id="uphit_review">
+		UPDATE REVIEW SET N_HIT = N_HIT+1 WHERE N_NO = #{param1}
+	</update>
+	<insert id="n_review_write">
+		INSERT INTO REVIEW VALUES
+		(
+			REVIEW_SEQ.NEXTVAL,
+			#{param1},
+			#{param2},
+			SYSDATE,
+			0
+		)
+	</insert>
+	<select id="n_review_content" resultType="com.traffic.dto.user.DTO_Notice">
+		SELECT N_NO,
+			   N_TITLE,
+			   N_CONTENT,
+			   N_DATE,
+			   N_HIT
+		FROM   REVIEW
+		WHERE N_NO = #{param1}
+	</select>
+	<update id="n_review_update">
+		UPDATE REVIEW SET N_TITLE = #{param2}, N_CONTENT = #{param3}
+		WHERE N_NO = #{param1}
+	</update>
+</mapper>

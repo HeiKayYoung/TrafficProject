@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- 최종 수정 : 남기문 -->
+	<!-- 서브페이지 기본 -->
+  	<definition name="subpagelayout_user" template="/WEB-INF/views/layout/user/subpagelayout.jsp">
+  			<put-attribute name="title" value="" />
+  			<put-attribute name="header" value="/WEB-INF/views/layout/user/common/header.jsp"/>
+  			<put-attribute name="side" value="/WEB-INF/views/layout/user/common/side.jsp"/>
+  			<put-attribute name="footer" value="/WEB-INF/views/layout/user/common/footer.jsp"/>
+  	</definition>
+  	
+  	<definition name="traffic/*" extends="subpagelayout_user">
+  			<put-attribute name="content" value="/WEB-INF/views/traffic/{1}.jsp"/>
+  	</definition>
+
+  	 <!-- <definition name="traffic/notice" extends="subpagelayout_user">
+  			<put-attribute name="content" value="/WEB-INF/views/traffic/notice.jsp"/>
+  	</definition> -->
+  	
+  	
+  	
+  	<!-- seoul/traffic/ -->
+  	
+</tiles-definitions>

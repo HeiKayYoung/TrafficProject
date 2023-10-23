@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/* * {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	font-family: "고딕";
+
+} */
+
+
+@font-face {
+	font-family: 'GmarketSansMedium';
+	src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'GmarketSansMedium';
+}
+
+#content {
+	height: 100%;
+}
+
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+details summary::marker{font-size:0;}
+
+.sc input[type=submit]{
+	background-color: #D2D2FF;
+	width: 80px;
+	height: 25px;
+	color: black;
+}
+

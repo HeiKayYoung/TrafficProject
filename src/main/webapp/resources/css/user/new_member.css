@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+@font-face {
+	font-family: 'GmarketSansMedium';
+	src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+* {
+	margin:0px;
+	padding:0px;
+	font-family: 'GmarketSansMedium', sans-serif;
+} 
+#years{
+	margin-top: 20px;
+}
+.year{
+	text-decoration: none;
+	border: 0px;
+	background-color : gray;
+	width : 150px;
+	height : 50px;
+	font-size: 20px;
+	color : rgb(1, 19, 67);
+	border-radius: 5px;
+	display:inline-block;
+	text-align: center;
+	line-height: 50px;
+	font-weight: bold;
+}
+.year:hover{
+	text-decoration: none;
+	border: 0px;
+	background-color : rgb(1, 19, 67);
+	width : 150px;
+	height : 50px;
+	font-size: 20px;
+	color : rgb(235, 208, 28);
+	border-radius: 5px;
+	display:inline-block;
+	text-align: center;
+	line-height: 50px;
+}
+#selectedYear{
+	text-decoration: none;
+	border: 0px;
+	background-color : rgb(1, 19, 67);
+	width : 150px;
+	height : 50px;
+	font-size: 20px;
+	color : rgb(235, 208, 28);
+	border-radius: 5px;
+	display:inline-block;
+	text-align: center;
+	line-height: 50px;
+}
+#box{
+	margin-left:70px;
+	display : inline-flex;	
+}
+#text p{
+	display: inline-block;
+	margin-top: 50px;
+	margin-left: 200px;
+}

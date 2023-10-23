@@ -1,0 +1,147 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- (namespace) 인터페이스 경로 -->
+<mapper namespace="com.traffic.dao.user.IDao_Subway">
+
+<select id="airqulity"
+	resultType="com.traffic.dto.user.DTO_Subway">
+		<![CDATA[
+SELECT * FROM (SELECT S_DISTRICT,
+S_LINE,
+S_NAME,
+TRUNC((S_PDUST/150),3)S_PDUST,
+(S_CO2/1000)S_CO2,
+TRUNC((S_H2CO/120),3)S_H2CO,
+TRUNC((S_CO/10),3)S_CO,
+TRUNC(((S_PDUST/150)+(S_CO2/1000)+(S_H2CO/120)+(S_CO/10)),3)TOTAL
+FROM SAIRQUALITY 
+ORDER BY TOTAL) WHERE ROWNUM<=5
+	]]>
+</select>
+
+<select id="airqulityRow"
+	resultType="com.traffic.dto.user.DTO_Subway">
+		<![CDATA[
+SELECT * FROM (SELECT S_DISTRICT,
+S_LINE,
+S_NAME,
+TRUNC((S_PDUST/150),3)S_PDUST,
+(S_CO2/1000)S_CO2,
+TRUNC((S_H2CO/120),3)S_H2CO,
+TRUNC((S_CO/10),3)S_CO,
+TRUNC(((S_PDUST/150)+(S_CO2/1000)+(S_H2CO/120)+(S_CO/10)),3)TOTAL
+FROM SAIRQUALITY 
+ORDER BY TOTAL DESC) WHERE ROWNUM<=5
+	]]>
+</select>
+
+
+<select id="ssafety_info_list" resultType="com.traffic.dto.user.DTO_Subway_safety">
+SELECT 
+SSAFETY_NO,SSAFETY_TITLE,SSAFETY_CON,SSAFETY_FILE,SSAFETY_DATE,SSAFETY_COUNT
+FROM SSAFETY_LIST ORDER BY SSAFETY_NO DESC
+
+</select>
+
+<update id="ssafety_info_detail_count" >
+UPDATE SSAFETY_LIST SET SSAFETY_COUNT=SSAFETY_COUNT+1 WHERE SSAFETY_NO=#{param1 }
+</update>
+
+<select id="ssafety_info_detail" resultType="com.traffic.dto.user.DTO_Subway_safety">
+SELECT 
+SSAFETY_NO,SSAFETY_TITLE,SSAFETY_CON,SSAFETY_FILE,SSAFETY_DATE,SSAFETY_COUNT
+FROM SSAFETY_LIST WHERE SSAFETY_NO=#{param1 }
+</select>
+
+
+<select id="ssabli_fac_ev" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT A.STATN_NM,A.ROUTE,A.CRDNT_Y,A.CRDNT_X,
+B.STATN_EV,
+B.STATN_WL,
+B.STATN_EM,
+B.STATN_BF
+FROM  SSTATION_M_INFO A INNER JOIN  SABLI_FAC B
+ON A.STATN_ID=B.STATN_ID
+WHERE B.STATN_EV ='Y'
+</select>
+
+<select id="ssabli_fac_wl" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT A.STATN_NM,A.ROUTE,A.CRDNT_Y,A.CRDNT_X,
+B.STATN_EV,
+B.STATN_WL,
+B.STATN_EM,
+B.STATN_BF
+FROM  SSTATION_M_INFO A INNER JOIN  SABLI_FAC B
+ON A.STATN_ID=B.STATN_ID
+WHERE B.STATN_WL ='Y'
+</select>
+
+<select id="ssabli_fac_bf" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT A.STATN_NM,A.ROUTE,A.CRDNT_Y,A.CRDNT_X,
+B.STATN_EV,
+B.STATN_WL,
+B.STATN_EM,
+B.STATN_BF
+FROM  SSTATION_M_INFO A INNER JOIN  SABLI_FAC B
+ON A.STATN_ID=B.STATN_ID
+WHERE B.STATN_BF ='Y'
+</select>
+
+<select id="ssabli_fac_em" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT A.STATN_NM,A.ROUTE,A.CRDNT_Y,A.CRDNT_X,
+B.STATN_EV,
+B.STATN_WL,
+B.STATN_EM,
+B.STATN_BF
+FROM  SSTATION_M_INFO A INNER JOIN  SABLI_FAC B
+ON A.STATN_ID=B.STATN_ID
+WHERE B.STATN_EM ='Y'
+</select>
+
+<select id="ssabli_ev_info" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT ROUTE,STATN_NM,EV_NV,EV_LOCA,EV_ML FROM SABLI_EV 
+
+	<if test="searchEvKeyword == null or searchEvKeyword == ''">
+	WHERE STATN_NM LIKE '%%'
+	</if> 
+    <if test="searchEvKeyword != null and searchEvKeyword != ''">
+    WHERE STATN_NM LIKE '%' || #{searchEvKeyword} || '%'
+    </if>  	
+ORDER BY ROUTE
+</select>
+
+<select id="ssabli_wl_info" resultType="com.traffic.dto.user.DTO_Subway_sabli_fac">
+SELECT ROUTE,STATN_NM,WL_NV,WL_LOCA,WL_ML FROM SABLI_WL 
+
+	<if test="searchWlKeyword == null or searchWlKeyword == ''">
+	WHERE STATN_NM LIKE '%%'
+	</if> 
+    <if test="searchWlKeyword != null and searchWlKeyword != ''">
+    WHERE STATN_NM LIKE '%' || #{searchWlKeyword} || '%'
+    </if>  	
+ORDER BY ROUTE
+</select>
+
+
+<select id="scongestion_info" resultType="com.traffic.dto.user.DTO_Subway_congestion">
+    SELECT STATN_LINK,
+    
+    <if test="congesttime.equals('time8')">
+	 TIME8
+	</if> 
+    <if test="congesttime.equals('time9')">
+	 TIME9
+	</if> 
+    <if test="congesttime.equals('time18')">
+	 TIME18
+	</if> 
+    <if test="congesttime.equals('time19')">
+	 TIME19
+	</if> 
+      
+    FROM SCONGESTION
+</select>
+
+</mapper>
